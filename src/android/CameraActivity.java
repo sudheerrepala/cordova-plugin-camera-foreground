@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import android.app.Activity;
 import android.hardware.Camera;
@@ -52,6 +53,23 @@ public class CameraActivity extends Activity {
 
 		// Create an instance of Camera
 		mCamera = getCameraInstance();
+		
+		Camera.Parameters params = mCamera.getParameters();
+	    List<Camera.Size> sizes = params.getSupportedPictureSizes();
+	    
+	    int w = 0, h = 0;
+	    for(Camera.Size s : sizes){
+	    	// If larger, take it
+	    	if (s.width * s.height > w * h) {
+	    		w = s.width;
+	    		h = s.height;
+	    	}
+	    }
+
+	    params.setPictureSize(w, h);
+	    params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+
+	    mCamera.setParameters(params);
 
 		// Create a Preview and set it as the content of activity.
 		mPreview = new CameraPreview(this);
