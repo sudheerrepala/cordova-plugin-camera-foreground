@@ -84,7 +84,7 @@ public class CameraActivity extends Activity {
 		captureButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				if (pressed)
+				if (pressed || mCamera == null)
 					return;
 
 				// Set pressed = true to prevent freezing.
@@ -113,12 +113,12 @@ public class CameraActivity extends Activity {
 	}
 
 	@Override
-	protected void onPause() {
+	protected void onDestroy() {
 		if (mCamera != null) {
 			mCamera.release(); // release the camera for other applications
 			mCamera = null;
 		}
-		super.onPause();
+		super.onDestroy();
 	}
 
 	/** A safe way to get an instance of the Camera object. */
