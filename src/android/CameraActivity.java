@@ -53,6 +53,12 @@ public class CameraActivity extends Activity {
 
 		// Create an instance of Camera
 		mCamera = getCameraInstance();
+
+		if (mCamera == null) {
+			setResult(RESULT_CANCELED);
+			finish();
+			return;
+		}
 		
 		Camera.Parameters params = mCamera.getParameters();
 	    List<Camera.Size> sizes = params.getSupportedPictureSizes();
@@ -115,6 +121,12 @@ public class CameraActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		if (mCamera != null) {
+			try {
+			    mCamera.stopPreview();
+	        	mCamera.setPreviewCallback(null); 
+			} catch (Exception e) {
+				Log.d(TAG, "Exception stopping camera: " + e.getMessage());
+			}
 			mCamera.release(); // release the camera for other applications
 			mCamera = null;
 		}
@@ -128,6 +140,7 @@ public class CameraActivity extends Activity {
 			c = Camera.open(); // attempt to get a Camera instance
 		} catch (Exception e) {
 			// Camera is not available (in use or does not exist)
+			Log.d(TAG, "Camera not available: " + e.getMessage());
 		}
 		return c; // returns null if camera is unavailable
 	}
