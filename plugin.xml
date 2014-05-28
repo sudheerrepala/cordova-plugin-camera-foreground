@@ -5,7 +5,7 @@
         id="co.mwater.foregroundcameraplugin"
         version="0.1.0">
     <name>Foreground Camera</name>
-    <license>Apache 2.0 License</license>
+    <license>Apache 2.0</license>
     <author>Clayton Grassick and others</author>
     <description>Camera plugin that prevents app being killed off in Android</description>
     <keywords>camera,foreground</keywords>
