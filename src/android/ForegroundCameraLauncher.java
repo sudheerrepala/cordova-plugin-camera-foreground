@@ -41,6 +41,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import java.io.ByteArrayOutputStream;
 
 /**
  * This class launches the camera view, allows the user to take a picture,
@@ -94,18 +95,10 @@ public class ForegroundCameraLauncher extends CordovaPlugin {
 
 		try {
 			if (action.equals("takePicture")) {
-				this.targetHeight = 0;
-				this.targetWidth = 0;
-				this.mQuality = 80;
-				this.destinationType = 1;
-
-				JSONObject options = args.optJSONObject(0);
-				if (options != null) {
-					this.targetHeight = options.getInt("targetHeight");
-					this.targetWidth = options.getInt("targetWidth");
-					this.mQuality = options.getInt("quality");
-					this.destinationType = options.getInt("destinationType");
-				}
+				this.mQuality = args.getInt(0);
+				this.destinationType = args.getInt(1);
+				this.targetWidth = args.getInt(3);
+				this.targetHeight = args.getInt(4);
 
 				this.takePicture();
 
@@ -235,6 +228,8 @@ public class ForegroundCameraLauncher extends CordovaPlugin {
 				// Restore exif data to file
 				exif.createOutFile(getRealPathFromURI(uri, this.cordova));
 				exif.writeExifData();
+
+				android.util.Log.i("CameraPlugin", "destinationType: " + this.destinationType);
 
 				if (this.destinationType == 1) { //File URI
 					// Send Uri back to JavaScript for viewing image
