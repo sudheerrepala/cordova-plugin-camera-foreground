@@ -40,6 +40,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 
 /**
  * This class launches the camera view, allows the user to take a picture,
@@ -235,18 +236,16 @@ public class ForegroundCameraLauncher extends CordovaPlugin {
 				exif.createOutFile(getRealPathFromURI(uri, this.cordova));
 				exif.writeExifData();
 
-
-				if ( this.destinationType == 1 ) { //File URI
+				if (this.destinationType == 1) { //File URI
 					// Send Uri back to JavaScript for viewing image
 					this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, uri.toString()));
-	//						getRealPathFromURI(uri, this.cordova))); WRONG. Needs URI	
-				} else {
-					var base64Data = ForegroundCameraLauncher.encodeTobase64(bitmap);
+				} else if (this.destinationType == 0) { //DATA URL
+					String base64Data = ForegroundCameraLauncher.encodeTobase64(bitmap, this.mQuality);
 					this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, base64Data));
 				}
-				
-
-
+				else {
+					this.failPicture("Unsupported destination");
+				}
 
 				bitmap.recycle();
 				bitmap = null;
@@ -271,15 +270,12 @@ public class ForegroundCameraLauncher extends CordovaPlugin {
 	}
 	
 	//http://stackoverflow.com/a/9768973/3582127
-	public static String encodeTobase64(Bitmap image)
+	public static String encodeTobase64(Bitmap image, int quality)
 	{
-	    Bitmap immagex=image;
 	    ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-	    immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+	    image.compress(Bitmap.CompressFormat.JPEG, quality, baos);
 	    byte[] b = baos.toByteArray();
-	    String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
-	
-	    Log.e("LOOK", imageEncoded);
+	    String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
 	    return imageEncoded;
 	}
 
