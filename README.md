@@ -1,3 +1,5 @@
+# NOTE: This is not maintained anymore. I suggest switching to https://github.com/shaithana/cordova-plugin-wezka-nativecamera which has a superior UI
+
 cordova-plugin-camera-foreground
 ==========================
 
