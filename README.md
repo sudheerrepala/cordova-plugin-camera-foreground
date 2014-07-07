@@ -1,4 +1,6 @@
-# NOTE: This is not maintained anymore. I suggest switching to https://github.com/shaithana/cordova-plugin-wezka-nativecamera which has a superior UI
+# NOTE: This is not maintained anymore. 
+
+## I suggest switching to https://github.com/shaithana/cordova-plugin-wezka-nativecamera which has a superior UI. I have an active fork at https://github.com/mWater/cordova-plugin-wezka-nativecamera until some fixes are merged.
 
 cordova-plugin-camera-foreground
 ==========================
